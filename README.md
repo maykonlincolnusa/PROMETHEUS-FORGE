@@ -34,16 +34,18 @@ The product is inspired by the emerging idea of AI for the physical economy: red
 
 ## Product walkthrough
 
+<p align="center">
+  <img src="assets/screenshots/command-center-dark.png" alt="Prometheus Forge dark Command Center showing readiness, prioritized assets, telemetry coverage, recent events, and a readiness trend" width="100%" />
+</p>
+
+<p align="center"><sub><strong>Command Center</strong> — one operational view of readiness, critical assets, maintenance exposure, telemetry coverage, and recent events.</sub></p>
+
+The interface is organized around six focused workspaces: **Command Center**, **Digital Twin**, **Maintainer**, **Mission Readiness**, **Design Review**, and **Public Context**. Together, they take an operator from a fleet-level signal to a traceable engineering decision without turning a recommendation into an automatic action.
+
 <table>
   <tr>
-    <td width="33%" valign="top"><strong>Command Center</strong><br /><sub>Fleet readiness, priority, and telemetry overview.</sub><br /><br /><img src="assets/screenshots/command-center.png" alt="Prometheus Forge command center dashboard" /></td>
-    <td width="33%" valign="top"><strong>Digital Twin</strong><br /><sub>Explainable condition and projected risk.</sub><br /><br /><img src="assets/screenshots/digital-twin.png" alt="Digital Twin asset condition view" /></td>
-    <td width="33%" valign="top"><strong>Maintainer</strong><br /><sub>Maintenance ranking based on operational risk.</sub><br /><br /><img src="assets/screenshots/maintenance.png" alt="Maintenance prioritization view" /></td>
-  </tr>
-  <tr>
-    <td width="33%" valign="top"><strong>Mission Readiness</strong><br /><sub>Scenario-based impact of temporary downtime.</sub><br /><br /><img src="assets/screenshots/readiness.png" alt="Mission readiness impact simulator" /></td>
-    <td width="33%" valign="top"><strong>Design Review</strong><br /><sub>Human-approved engineering change review.</sub><br /><br /><img src="assets/screenshots/design-review.png" alt="Engineering change design review" /></td>
-    <td width="33%" valign="top"><strong>Public Context</strong><br /><sub>NOAA/NWS and USGS situational context.</sub><br /><br /><img src="assets/screenshots/public-context.png" alt="Public operational context view" /></td>
+    <td width="50%" valign="top"><strong>Digital Twin</strong><br /><sub>Inspect health, operating hours, technical signals, and a transparent risk projection.</sub><br /><br /><img src="assets/screenshots/digital-twin.png" alt="Dark Prometheus Forge Digital Twin workspace" /></td>
+    <td width="50%" valign="top"><strong>Mission Readiness</strong><br /><sub>Model the impact of an asset becoming unavailable before committing an operational decision.</sub><br /><br /><img src="assets/screenshots/readiness.png" alt="Dark Prometheus Forge Mission Readiness workspace" /></td>
   </tr>
 </table>
 

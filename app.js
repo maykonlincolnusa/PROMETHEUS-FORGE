@@ -7,7 +7,8 @@ const assets = [
   { id:'GX-028', name:'Gerador Auxiliar 028', type:'Energia', state:'TX', health:67, vibration:71, temperature:69, hours:1961, criticality:69, status:'attention', last:'Há 4h' },
 ];
 const viewMeta={dashboard:['CENTRO DE COMANDO','Visão operacional'],twin:['DIGITAL TWIN','Estado dos ativos'],maintenance:['MAINTAINER','Manutenção inteligente'],readiness:['MISSION READINESS','Prontidão operacional'],review:['DESIGN REVIEW','Validação de alteração'],context:['INTELIGÊNCIA EXTERNA','Contexto público']};
-let currentView='dashboard'; let selected=assets[0];
+const requestedView=new URLSearchParams(window.location.search).get('view');
+let currentView=['dashboard','twin','maintenance','readiness','review','context'].includes(requestedView)?requestedView:'dashboard'; let selected=assets[0];
 const risk=a=>Math.round((100-a.health)*.5+a.vibration*.2+a.temperature*.15+a.criticality*.15);
 const cls=n=>n>=70?'high':n>=45?'medium':'low';
 const label=n=>n>=70?'CRÍTICO':n>=45?'ATENÇÃO':'ESTÁVEL';
