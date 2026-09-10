@@ -1,6 +1,30 @@
-# Prometheus Forge
+<p align="center">
+  <img src="assets/forge-banner.svg" alt="Prometheus Forge — Operational Intelligence" width="100%" />
+</p>
 
-> An operational intelligence platform for understanding physical assets, anticipating risk, and supporting accountable engineering decisions.
+<p align="center">
+  <strong>Operational intelligence for physical assets.</strong><br />
+  Understand condition · anticipate risk · decide with accountability.
+</p>
+
+<p align="center">
+  <a href="#quick-start"><img src="https://img.shields.io/badge/runtime-Node.js%2020%2B-339933?style=flat-square&amp;logo=nodedotjs&amp;logoColor=white" alt="Node.js 20 or later" /></a>
+  <a href="#production-deployment-baseline"><img src="https://img.shields.io/badge/deployment-Docker-2496ED?style=flat-square&amp;logo=docker&amp;logoColor=white" alt="Docker deployment baseline" /></a>
+  <a href="#security-and-governance-principles"><img src="https://img.shields.io/badge/decisioning-human--in--the--loop-41d9c2?style=flat-square" alt="Human in the loop" /></a>
+  <a href="#product-capabilities"><img src="https://img.shields.io/badge/status-active%20prototype-72a7ff?style=flat-square" alt="Active prototype" /></a>
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#product-walkthrough">Screenshots</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#roadmap">Roadmap</a> ·
+  <a href="#security-and-governance-principles">Security</a>
+</p>
+
+---
+
+> **Prometheus Forge** is an operational intelligence platform for understanding physical assets, anticipating risk, and supporting accountable engineering decisions.
 
 Prometheus Forge is a local-first prototype for **physical operations intelligence**. It brings together asset condition, maintenance risk, operational readiness, engineering-change review, and public situational context in one decision console.
 
@@ -10,16 +34,18 @@ The product is inspired by the emerging idea of AI for the physical economy: red
 
 ## Product walkthrough
 
-<p align="center">
-  <img src="assets/screenshots/command-center.png" alt="Prometheus Forge command center dashboard" width="32%" />
-  <img src="assets/screenshots/digital-twin.png" alt="Digital Twin asset condition view" width="32%" />
-  <img src="assets/screenshots/maintenance.png" alt="Maintenance prioritization view" width="32%" />
-</p>
-<p align="center">
-  <img src="assets/screenshots/readiness.png" alt="Mission readiness impact simulator" width="32%" />
-  <img src="assets/screenshots/design-review.png" alt="Engineering change design review" width="32%" />
-  <img src="assets/screenshots/public-context.png" alt="Public operational context view" width="32%" />
-</p>
+<table>
+  <tr>
+    <td width="33%" valign="top"><strong>Command Center</strong><br /><sub>Fleet readiness, priority, and telemetry overview.</sub><br /><br /><img src="assets/screenshots/command-center.png" alt="Prometheus Forge command center dashboard" /></td>
+    <td width="33%" valign="top"><strong>Digital Twin</strong><br /><sub>Explainable condition and projected risk.</sub><br /><br /><img src="assets/screenshots/digital-twin.png" alt="Digital Twin asset condition view" /></td>
+    <td width="33%" valign="top"><strong>Maintainer</strong><br /><sub>Maintenance ranking based on operational risk.</sub><br /><br /><img src="assets/screenshots/maintenance.png" alt="Maintenance prioritization view" /></td>
+  </tr>
+  <tr>
+    <td width="33%" valign="top"><strong>Mission Readiness</strong><br /><sub>Scenario-based impact of temporary downtime.</sub><br /><br /><img src="assets/screenshots/readiness.png" alt="Mission readiness impact simulator" /></td>
+    <td width="33%" valign="top"><strong>Design Review</strong><br /><sub>Human-approved engineering change review.</sub><br /><br /><img src="assets/screenshots/design-review.png" alt="Engineering change design review" /></td>
+    <td width="33%" valign="top"><strong>Public Context</strong><br /><sub>NOAA/NWS and USGS situational context.</sub><br /><br /><img src="assets/screenshots/public-context.png" alt="Public operational context view" /></td>
+  </tr>
+</table>
 
 | View | What it demonstrates |
 | --- | --- |
