@@ -8,6 +8,28 @@ The product is inspired by the emerging idea of AI for the physical economy: red
 
 > **Prototype notice:** all assets, telemetry, locations, and operational scenarios in this repository are synthetic. They do not represent real equipment, facilities, missions, or operational capabilities.
 
+## Product walkthrough
+
+<p align="center">
+  <img src="assets/screenshots/command-center.png" alt="Prometheus Forge command center dashboard" width="32%" />
+  <img src="assets/screenshots/digital-twin.png" alt="Digital Twin asset condition view" width="32%" />
+  <img src="assets/screenshots/maintenance.png" alt="Maintenance prioritization view" width="32%" />
+</p>
+<p align="center">
+  <img src="assets/screenshots/readiness.png" alt="Mission readiness impact simulator" width="32%" />
+  <img src="assets/screenshots/design-review.png" alt="Engineering change design review" width="32%" />
+  <img src="assets/screenshots/public-context.png" alt="Public operational context view" width="32%" />
+</p>
+
+| View | What it demonstrates |
+| --- | --- |
+| **Command Center** | Fleet readiness, maintenance backlog, telemetry coverage, asset priority, and recent events. |
+| **Digital Twin** | Explainable asset condition, technical signals, and risk projection under a simulated load. |
+| **Maintainer** | Maintenance prioritization that combines degradation, criticality, and operational urgency. |
+| **Mission Readiness** | Operational-capacity impact of an asset becoming temporarily unavailable. |
+| **Design Review** | Traceable technical-change screening with human approval kept in the loop. |
+| **Public Context** | Official NOAA/NWS and USGS signals used strictly as situational context. |
+
 ## Why Forge
 
 Teams responsible for critical assets often work across disconnected maintenance records, monitoring dashboards, engineering documents, and external risk feeds. That fragmentation makes it difficult to answer basic but high-value questions:
