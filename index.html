@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <title>Prometheus Forge — Inteligência Operacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#dashboard" aria-label="Prometheus Forge">
+          <span class="brand-mark">P</span><span>PROMETHEUS <b>FORGE</b></span>
+        </a>
+        <p class="product-label">PLATAFORMA OPERACIONAL</p>
+        <nav id="navigation" aria-label="Navegação principal">
+          <button class="nav-item active" data-view="dashboard"><span>⌘</span>Visão geral</button>
+          <button class="nav-item" data-view="twin"><span>◈</span>Digital Twin</button>
+          <button class="nav-item" data-view="maintenance"><span>⌁</span>Manutenção</button>
+          <button class="nav-item" data-view="readiness"><span>◉</span>Prontidão</button>
+          <button class="nav-item" data-view="review"><span>◇</span>Design Review</button>
+          <button class="nav-item" data-view="context"><span>⌖</span>Contexto público</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="connection"><i></i>SISTEMA ONLINE</div>
+          <p>Forge v0.1 · ambiente simulado</p>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <div><p class="eyebrow" id="section-label">CENTRO DE COMANDO</p><h1 id="page-title">Visão operacional</h1></div>
+          <div class="top-actions"><span id="clock"></span><button class="button secondary" id="simulate-button">Simular ciclo</button><button class="button" id="new-review-button">+ Nova análise</button></div>
+        </header>
+        <section id="app-content"></section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

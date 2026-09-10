@@ -1,0 +1,8 @@
+[
+  {"id":"VX-204","name":"Vetor de Campo 204","type":"Veículo terrestre","state":"CA","health":72,"vibration":78,"temperature":66,"hours":1842,"criticality":92,"status":"attention","last":"Há 2h"},
+  {"id":"GX-019","name":"Gerador Auxiliar 019","type":"Energia","state":"TX","health":89,"vibration":34,"temperature":42,"hours":621,"criticality":74,"status":"normal","last":"Há 6 min"},
+  {"id":"AR-081","name":"Unidade Aérea 081","type":"Plataforma aérea","state":"VA","health":58,"vibration":86,"temperature":79,"hours":2307,"criticality":96,"status":"critical","last":"Há 1h"},
+  {"id":"RC-112","name":"Relay de Comunicações 112","type":"Comunicações","state":"WA","health":94,"vibration":12,"temperature":38,"hours":424,"criticality":88,"status":"normal","last":"Há 1 min"},
+  {"id":"VX-178","name":"Vetor de Campo 178","type":"Veículo terrestre","state":"FL","health":81,"vibration":49,"temperature":55,"hours":1220,"criticality":81,"status":"attention","last":"Há 18 min"},
+  {"id":"GX-028","name":"Gerador Auxiliar 028","type":"Energia","state":"TX","health":67,"vibration":71,"temperature":69,"hours":1961,"criticality":69,"status":"attention","last":"Há 4h"}
+]

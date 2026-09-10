@@ -1,0 +1,18 @@
+{
+  "name": "prometheus-forge",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Plataforma de engenharia operacional com contexto público e decisão auditável.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js && node --check scripts/migrate.js && node --check scripts/provision-admin.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:provision-admin": "node scripts/provision-admin.js"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
