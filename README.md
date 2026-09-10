@@ -12,6 +12,7 @@
   <a href="#production-deployment-baseline"><img src="https://img.shields.io/badge/deployment-Docker-2496ED?style=flat-square&amp;logo=docker&amp;logoColor=white" alt="Docker deployment baseline" /></a>
   <a href="#security-and-governance-principles"><img src="https://img.shields.io/badge/decisioning-human--in--the--loop-41d9c2?style=flat-square" alt="Human in the loop" /></a>
   <a href="#product-capabilities"><img src="https://img.shields.io/badge/status-active%20prototype-72a7ff?style=flat-square" alt="Active prototype" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-1f6feb?style=flat-square" alt="MIT License" /></a>
 </p>
 
 <p align="center">
@@ -253,4 +254,4 @@ The next important step is to replace the demonstration JSON store with a proper
 
 ## License and usage
 
-This repository is an evolving prototype. Select an appropriate license and establish data-governance, safety, and accountability requirements before using it in a professional or operational environment.
+This project is distributed under the [MIT License](LICENSE). Before using it in a professional or operational environment, establish the applicable data-governance, safety, regulatory, and accountability requirements.
