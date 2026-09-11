@@ -1,18 +1,25 @@
 {
   "name": "prometheus-forge",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "private": true,
-  "description": "Plataforma de engenharia operacional com contexto público e decisão auditável.",
+  "description": "Plataforma de inteligência operacional para ativos físicos: condição, risco, prontidão e decisão auditável.",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check app.js && node --check scripts/migrate.js && node --check scripts/provision-admin.js",
+    "check": "node scripts/check.js",
+    "test": "node --test tests/*.test.js",
+    "test:ui": "playwright test",
     "db:migrate": "node scripts/migrate.js",
-    "db:provision-admin": "node scripts/provision-admin.js"
+    "db:provision-admin": "node scripts/provision-admin.js",
+    "collect:context": "node scripts/collect-context.js"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.1130.0",
     "pg": "^8.16.3"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
   }
 }

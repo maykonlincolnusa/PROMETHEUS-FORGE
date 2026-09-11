@@ -4,3 +4,8 @@ node_modules/
 !*.example
 data/runtime/
 .tmp-chrome-*/
+.npm-cache/
+test-results/
+playwright-report/
+.tmp-tests/
+infra/aws/*.parameters.json

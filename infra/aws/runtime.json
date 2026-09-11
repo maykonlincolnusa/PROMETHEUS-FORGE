@@ -1,0 +1,101 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Forge private ECS Fargate service with internal HTTPS ALB. Requires foundation, private PostgreSQL, secrets, DNS certificate and existing network.",
+  "Parameters": {
+    "VpcId": { "Type": "AWS::EC2::VPC::Id" },
+    "PrivateSubnets": { "Type": "List<AWS::EC2::Subnet::Id>", "Description": "At least two AZs; outbound access through NAT or required VPC endpoints." },
+    "ClientCidr": { "Type": "String", "Description": "Approved VPN/private client CIDR for HTTPS ingress." },
+    "CertificateArn": { "Type": "String", "Description": "ACM certificate in this region, matching your private DNS hostname." },
+    "ClusterArn": { "Type": "String" },
+    "TaskRoleArn": { "Type": "String" },
+    "RepositoryArn": { "Type": "String" },
+    "ImageUri": { "Type": "String", "AllowedPattern": ".+@sha256:[a-f0-9]{64}", "Description": "ECR image pinned by digest." },
+    "LogGroupName": { "Type": "String" },
+    "DatabaseSecretArn": { "Type": "String", "Description": "Secret string containing DATABASE_URL for a least-privilege application DB user." },
+    "ApiTokenSecretArn": { "Type": "String", "Description": "Secret string containing a random API token of at least 32 characters." },
+    "SecretKmsKeyArn": { "Type": "String", "Default": "", "Description": "Optional customer-managed KMS key used by both secrets." },
+    "DatabaseCaPath": { "Type": "String", "Default": "", "Description": "Optional PEM CA file baked into the image. For RDS include its verified root bundle." },
+    "BedrockModelId": { "Type": "String", "Default": "", "Description": "Converse-compatible model/profile ID; empty disables generative AI." },
+    "DesiredCount": { "Type": "Number", "Default": 0, "MinValue": 0, "MaxValue": 4, "Description": "Keep 0 until migrations are complete, then update to 1 or more." }
+  },
+  "Conditions": {
+    "EnableBedrock": { "Fn::Not": [{ "Fn::Equals": [{ "Ref": "BedrockModelId" }, ""] }] },
+    "CustomSecretKey": { "Fn::Not": [{ "Fn::Equals": [{ "Ref": "SecretKmsKeyArn" }, ""] }] }
+  },
+  "Resources": {
+    "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": { "GroupDescription": "HTTPS from approved private clients", "VpcId": { "Ref": "VpcId" }, "SecurityGroupIngress": [{ "IpProtocol": "tcp", "FromPort": 443, "ToPort": 443, "CidrIp": { "Ref": "ClientCidr" } }], "SecurityGroupEgress": [{ "IpProtocol": "tcp", "FromPort": 3000, "ToPort": 3000, "DestinationSecurityGroupId": { "Ref": "AppSecurityGroup" } }] }
+    },
+    "AppSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": { "GroupDescription": "Forge task networking; authorize this SG at PostgreSQL", "VpcId": { "Ref": "VpcId" }, "SecurityGroupEgress": [{ "IpProtocol": "tcp", "FromPort": 443, "ToPort": 443, "CidrIp": "0.0.0.0/0" }, { "IpProtocol": "tcp", "FromPort": 5432, "ToPort": 5432, "CidrIp": "0.0.0.0/0" }] }
+    },
+    "AppIngress": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": { "GroupId": { "Ref": "AppSecurityGroup" }, "IpProtocol": "tcp", "FromPort": 3000, "ToPort": 3000, "SourceSecurityGroupId": { "Ref": "LoadBalancerSecurityGroup" } }
+    },
+    "LoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": { "Scheme": "internal", "Type": "application", "Subnets": { "Ref": "PrivateSubnets" }, "SecurityGroups": [{ "Ref": "LoadBalancerSecurityGroup" }] }
+    },
+    "TargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": { "VpcId": { "Ref": "VpcId" }, "Port": 3000, "Protocol": "HTTP", "TargetType": "ip", "HealthCheckPath": "/api/health", "Matcher": { "HttpCode": "200" }, "TargetGroupAttributes": [{ "Key": "deregistration_delay.timeout_seconds", "Value": "30" }] }
+    },
+    "Listener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": { "LoadBalancerArn": { "Ref": "LoadBalancer" }, "Port": 443, "Protocol": "HTTPS", "SslPolicy": "ELBSecurityPolicy-TLS13-1-2-2021-06", "Certificates": [{ "CertificateArn": { "Ref": "CertificateArn" } }], "DefaultActions": [{ "Type": "forward", "TargetGroupArn": { "Ref": "TargetGroup" } }] }
+    },
+    "ExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": { "Version": "2012-10-17", "Statement": [{ "Effect": "Allow", "Principal": { "Service": "ecs-tasks.amazonaws.com" }, "Action": "sts:AssumeRole", "Condition": { "StringEquals": { "aws:SourceAccount": { "Ref": "AWS::AccountId" } }, "ArnLike": { "aws:SourceArn": { "Fn::Sub": "arn:${AWS::Partition}:ecs:${AWS::Region}:${AWS::AccountId}:*" } } } }] },
+        "Policies": [{ "PolicyName": "PullImageReadSecretsWriteLogs", "PolicyDocument": { "Version": "2012-10-17", "Statement": [
+          { "Effect": "Allow", "Action": "ecr:GetAuthorizationToken", "Resource": "*" },
+          { "Effect": "Allow", "Action": ["ecr:BatchCheckLayerAvailability", "ecr:GetDownloadUrlForLayer", "ecr:BatchGetImage"], "Resource": { "Ref": "RepositoryArn" } },
+          { "Effect": "Allow", "Action": ["logs:CreateLogStream", "logs:PutLogEvents"], "Resource": { "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LogGroupName}:*" } },
+          { "Effect": "Allow", "Action": "secretsmanager:GetSecretValue", "Resource": [{ "Ref": "DatabaseSecretArn" }, { "Ref": "ApiTokenSecretArn" }] },
+          { "Fn::If": ["CustomSecretKey", { "Effect": "Allow", "Action": "kms:Decrypt", "Resource": { "Ref": "SecretKmsKeyArn" }, "Condition": { "StringEquals": { "kms:ViaService": { "Fn::Sub": "secretsmanager.${AWS::Region}.${AWS::URLSuffix}" } } } }, { "Ref": "AWS::NoValue" }] }
+        ] } }]
+      }
+    },
+    "Task": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "Cpu": "512", "Memory": "1024", "NetworkMode": "awsvpc", "RequiresCompatibilities": ["FARGATE"],
+        "ExecutionRoleArn": { "Fn::GetAtt": ["ExecutionRole", "Arn"] }, "TaskRoleArn": { "Ref": "TaskRoleArn" },
+        "ContainerDefinitions": [{
+          "Name": "forge", "Image": { "Ref": "ImageUri" }, "Essential": true, "ReadonlyRootFilesystem": true,
+          "PortMappings": [{ "ContainerPort": 3000, "Protocol": "tcp" }],
+          "Environment": [
+            { "Name": "NODE_ENV", "Value": "production" }, { "Name": "PORT", "Value": "3000" },
+            { "Name": "DATABASE_SSL", "Value": "true" }, { "Name": "NODE_EXTRA_CA_CERTS", "Value": { "Ref": "DatabaseCaPath" } },
+            { "Name": "AWS_REGION", "Value": { "Ref": "AWS::Region" } },
+            { "Name": "AI_PROVIDER", "Value": { "Fn::If": ["EnableBedrock", "bedrock", "disabled"] } },
+            { "Name": "BEDROCK_MODEL_ID", "Value": { "Ref": "BedrockModelId" } },
+            { "Name": "PUBLIC_CONTEXT_ENABLED", "Value": "false" }
+          ],
+          "Secrets": [{ "Name": "DATABASE_URL", "ValueFrom": { "Ref": "DatabaseSecretArn" } }, { "Name": "FORGE_API_TOKEN", "ValueFrom": { "Ref": "ApiTokenSecretArn" } }],
+          "LogConfiguration": { "LogDriver": "awslogs", "Options": { "awslogs-group": { "Ref": "LogGroupName" }, "awslogs-region": { "Ref": "AWS::Region" }, "awslogs-stream-prefix": "forge" } },
+          "HealthCheck": { "Command": ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"], "Interval": 30, "Timeout": 5, "Retries": 3, "StartPeriod": 30 }
+        }]
+      }
+    },
+    "Service": {
+      "Type": "AWS::ECS::Service", "DependsOn": ["Listener", "AppIngress"],
+      "Properties": {
+        "Cluster": { "Ref": "ClusterArn" }, "TaskDefinition": { "Ref": "Task" }, "LaunchType": "FARGATE", "PlatformVersion": "1.4.0", "DesiredCount": { "Ref": "DesiredCount" },
+        "DeploymentConfiguration": { "DeploymentCircuitBreaker": { "Enable": true, "Rollback": true } },
+        "NetworkConfiguration": { "AwsvpcConfiguration": { "AssignPublicIp": "DISABLED", "Subnets": { "Ref": "PrivateSubnets" }, "SecurityGroups": [{ "Ref": "AppSecurityGroup" }] } },
+        "LoadBalancers": [{ "ContainerName": "forge", "ContainerPort": 3000, "TargetGroupArn": { "Ref": "TargetGroup" } }]
+      }
+    }
+  },
+  "Outputs": {
+    "LoadBalancerDns": { "Value": { "Fn::GetAtt": ["LoadBalancer", "DNSName"] }, "Description": "Create your private DNS alias matching the ACM certificate." },
+    "TaskDefinitionArn": { "Value": { "Ref": "Task" } },
+    "AppSecurityGroupId": { "Value": { "Ref": "AppSecurityGroup" } },
+    "ServiceName": { "Value": { "Fn::GetAtt": ["Service", "Name"] } }
+  }
+}

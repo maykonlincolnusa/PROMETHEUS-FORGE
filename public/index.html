@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="description" content="Prometheus Forge — console de inteligência operacional para ativos físicos: condição, risco, prontidão e decisão rastreável." />
+    <title>Prometheus Forge — Inteligência Operacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="assets/forge-banner.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#app-content">Ir para o conteúdo</a>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="?view=overview" aria-label="Prometheus Forge">
+          <span class="brand-mark">P</span><span>PROMETHEUS <b>FORGE</b></span>
+        </a>
+        <p class="product-label">INTELIGÊNCIA OPERACIONAL</p>
+        <nav id="navigation" aria-label="Navegação principal">
+          <button class="nav-item" type="button" data-view="overview"><span aria-hidden="true">⌘</span>Visão geral</button>
+          <button class="nav-item" type="button" data-view="twin"><span aria-hidden="true">◈</span>Digital Twin</button>
+          <button class="nav-item" type="button" data-view="maintenance"><span aria-hidden="true">⌁</span>Manutenção</button>
+          <button class="nav-item" type="button" data-view="readiness"><span aria-hidden="true">◉</span>Prontidão</button>
+          <button class="nav-item" type="button" data-view="review"><span aria-hidden="true">◇</span>Design Review</button>
+          <button class="nav-item" type="button" data-view="context"><span aria-hidden="true">⌖</span>Contexto público</button>
+          <button class="nav-item" type="button" data-view="audit"><span aria-hidden="true">≡</span>Auditoria</button>
+          <p class="nav-group-label">DADOS, IA &amp; CLOUD</p>
+          <button class="nav-item" type="button" data-view="statistics"><span aria-hidden="true">∿</span>Estatística</button>
+          <button class="nav-item" type="button" data-view="data"><span aria-hidden="true">▤</span>Engenharia de dados</button>
+          <button class="nav-item" type="button" data-view="models"><span aria-hidden="true">⟁</span>Laboratório de IA</button>
+          <button class="nav-item" type="button" data-view="platform"><span aria-hidden="true">☁</span>Plataforma AWS</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="connection"><i></i>FORGE INTELLIGENCE</div>
+          <p>Forge v0.5 · console de engenharia</p>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="section-label">CENTRO DE COMANDO</p>
+            <h1 id="page-title">Visão operacional</h1>
+          </div>
+          <div class="top-actions">
+            <span id="clock" aria-label="Hora local"></span>
+            <button class="button secondary" type="button" id="access-button">Acesso API</button>
+            <button class="button secondary" type="button" id="refresh-button">Atualizar dados</button>
+            <button class="button" type="button" id="new-review-button">+ Nova análise</button>
+          </div>
+        </header>
+        <section id="app-content" aria-live="polite"></section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <dialog id="access-dialog">
+      <form id="access-form">
+        <p class="eyebrow">ACESSO À PLATAFORMA</p>
+        <h2>Chave de acesso API</h2>
+        <p>A chave permanece apenas na memória desta aba e é apagada ao recarregar.</p>
+        <label for="api-token">Chave configurada no servidor</label>
+        <input id="api-token" type="password" autocomplete="off" />
+        <div class="inline-actions">
+          <button class="button" type="submit">Usar chave</button>
+          <button class="button secondary" id="close-access" type="button">Fechar</button>
+        </div>
+      </form>
+    </dialog>
+    <script src="core.js"></script>
+    <script src="workspaces.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
